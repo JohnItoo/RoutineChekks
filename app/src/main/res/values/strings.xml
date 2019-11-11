@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RoutineChecks</string>
+    <string name="default_loading_message">Loading, Please wait . . .</string>
+    <string name="ok">OK</string>
+    <string name="routine_list_info">Below are the list of Your routines.  Click on any of the routines to view more detailed information about the routine</string>
+    <string name="no_routines_found">You have no routines at the moment. Click on the red button to create your first routine</string>
+    <string name="up_next_info">Below are the list of Your routines for the next 12 hours.  Click on any of the routines to view more detailed information about the routine</string>
+    <string name="up_next_no_routines_found">You have no routines in the next 12 hours</string>
+    <string name="active">ACTIVE</string>
+    <string name="expired">EXPIRED</string>
+
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/routinesListFragment">
+
+    <fragment
+        android:id="@+id/routinesListFragment"
+        android:name="com.john.itoo.routinecheckks.app.routinelist.RoutineListFragment"
+        tools:layout="@layout/fragment_routines_list">
+        <action
+            android:id="@+id/action_routinesListFragment_to_routineDetailsFragment"
+            app:destination="@id/routineDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+                android:id="@+id/action_routinesListFragment_to_createRoutineFragment"
+                app:destination="@id/createRoutineFragment" />
+        <action
+                android:id="@+id/action_routinesListFragment_to_upNextRoutineListFragment"
+                app:destination="@id/upNextRoutineListFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/routineDetailsFragment"
+        android:name="com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragment"
+        tools:layout="@layout/fragment_routine_detail">
+        <argument
+            android:name="Routine"
+            app:argType="com.john.itoo.routinecheckks.app.models.Routine" />
+
+        <action
+                android:id="@+id/action_routineDetailsFragment_to_editRoutineFragment"
+                app:destination="@id/editRoutineFragment" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/upNextRoutineListFragment"
+            android:name="com.john.itoo.routinecheckks.app.routinelist.UpNextRoutineListFragment"
+            tools:layout="@layout/fragment_routines_list_up_next">
+    </fragment>
+    <fragment
+            android:id="@+id/createRoutineFragment"
+            android:name="com.john.itoo.routinecheckks.app.newroutines.CreateRoutineFragment"
+            tools:layout="@layout/create_routine_fragment">
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/editRoutineFragment"
+            android:name="com.john.itoo.routinecheckks.app.newroutines.EditRoutineFragment"
+            tools:layout="@layout/edit_routine_fragment">
+        <argument
+                android:name="Routine"
+                app:argType="com.john.itoo.routinecheckks.app.models.Routine" />
+    </fragment>
+
+</navigation>
