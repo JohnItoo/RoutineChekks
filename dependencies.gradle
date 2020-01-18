@@ -51,7 +51,10 @@ ext.versions = [
         room                : "2.0.0",
 
         //work manager
-        work                : "1.0.0-alpha11"
+        work                : "1.0.0-alpha11",
+
+        //cardview
+        cardView            : "1.0.0"
 
 ]
 

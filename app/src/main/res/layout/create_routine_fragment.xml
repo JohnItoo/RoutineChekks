@@ -36,7 +36,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Abyssinian" />
+                    android:hint="Routine name"/>
 
             <!--                    android:text="@{routine.description}"-->
 
@@ -52,14 +52,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title"
-                    tools:text="The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals." />
+                    android:hint="Details"
+                    android:paddingTop="6dp"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/description"
-                    android:layout_marginTop="6dp"
-                    android:id="@+id/frequency"/>
+
+                    android:id="@+id/frequency"
+                    android:layout_margin="14dp"/>
 
             <TextView
                     android:layout_width="match_parent"

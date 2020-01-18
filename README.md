@@ -11,7 +11,7 @@ Written in Kotlin and makes use of modern language features like Coroutines and 
 - DB layer with Room ORM.
   
  
- 
+  
 Not so interesting at the moment. Time constraint (phew)
   
 ## Overview

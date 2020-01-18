@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_gravity="center">
 
     <data>
 
@@ -10,9 +11,15 @@
                 type="com.john.itoo.routinecheckks.app.models.Routine" />
     </data>
 
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+     <com.google.android.material.card.MaterialCardView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_margin="16dp"
+             android:checkable="true"
+             android:clickable="true"
+             android:focusable="true"
+             style="materialCardViewStyle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -122,5 +129,5 @@
                     app:layout_constraintTop_toBottomOf="@+id/markDone"
                     app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+     </com.google.android.material.card.MaterialCardView>
 </layout>
