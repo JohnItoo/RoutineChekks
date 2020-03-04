@@ -30,7 +30,7 @@ ext.versions = [
         // AndroidX
         androidxCore        : '1.0.1',
         androidxRecyclerView: '1.0.0',
-        androidxMaterial    : '1.0.0',
+        androidxMaterial    : '1.2.0-alpha03',
         androidxBrowser     : '1.0.0',
         constraintLayout    : '1.1.3',
         lifecycle           : '2.1.0-alpha01',
