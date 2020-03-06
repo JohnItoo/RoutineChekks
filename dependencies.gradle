@@ -8,7 +8,7 @@ ext.versions = [
 
         //tests
         junit               : '4.12',
-        testRunner          : '1.2.0',
+        uiTests          : '1.2.0',
         espressoCore        : '3.2.0',
         coreTestingVersion  : '2.0.0',
         coroutinesCore      : '1.2.1',
@@ -54,7 +54,13 @@ ext.versions = [
         work                : "1.0.0-alpha11",
 
         //cardview
-        cardView            : "1.0.0"
+        cardView            : "1.0.0",
+
+        //espresso
+        espressoVersion     : "3.1.1",
+
+        //faslanee
+        screengrab          : "1.0.0"
 
 ]
 
