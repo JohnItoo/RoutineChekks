@@ -18,6 +18,7 @@ import com.john.itoo.routinecheckks.databinding.CreateRoutineFragmentBinding
 import com.john.itoo.routinecheckks.app.models.Routine
 import com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragmentArgs
 import com.john.itoo.routinecheckks.databinding.EditRoutineFragmentBinding
+import com.john.itoo.routinecheckks.utils.TimeUtils
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,6 +30,8 @@ class EditRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private var date = Date()
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var timeUtils: TimeUtils
 
     lateinit var binding: EditRoutineFragmentBinding
 
@@ -62,24 +65,7 @@ class EditRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.routine = args.routine
         date = args.routine.date
         Timber.d(args.routine.toString())
-        binding.time.setOnClickListener {
-
-            val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                date = cal.time
-                binding.time.text = SimpleDateFormat("HH:mm").format(date)
-            }
-            TimePickerDialog(
-                this.context,
-                timeSetListener,
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
-                true
-            ).show()
-
-        }
+        timeUtils.setDateTimeListeners(this.context!!, binding.time)
         binding.frequency.onItemSelectedListener = this
         val adapter =
             ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, frequencySet)

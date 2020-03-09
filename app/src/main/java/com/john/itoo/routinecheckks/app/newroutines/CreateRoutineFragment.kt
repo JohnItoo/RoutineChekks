@@ -1,6 +1,5 @@
 package com.john.itoo.routinecheckks.app.newroutines
 
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.john.itoo.routinecheckks.App
 import com.john.itoo.routinecheckks.base.BaseFragment
 import com.john.itoo.routinecheckks.databinding.CreateRoutineFragmentBinding
 import com.john.itoo.routinecheckks.app.models.Routine
-import java.text.SimpleDateFormat
+import com.john.itoo.routinecheckks.utils.TimeUtils
 import java.util.*
 import javax.inject.Inject
 
@@ -27,6 +26,9 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var binding: CreateRoutineFragmentBinding
+
+    @Inject
+    lateinit var timeUtils: TimeUtils
 
     companion object {
         fun newInstance() = CreateRoutineFragment()
@@ -41,6 +43,7 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     ): View? {
         binding = CreateRoutineFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        (mainActivity.applicationContext as App).component.inject(this)
         return binding.root
     }
 
@@ -52,24 +55,8 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(CreateRoutineViewModel::class.java)
         binding.viewModel = viewModel
-        binding.time.setOnClickListener {
+        timeUtils.setDateTimeListeners(this.context!!, binding.time)
 
-            val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                date = cal.time
-                binding.time.text = SimpleDateFormat("HH:mm").format(date)
-            }
-            TimePickerDialog(
-                this.context,
-                timeSetListener,
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
-                true
-            ).show()
-
-        }
         binding.frequency.setOnItemSelectedListener(this)
         val adapter =
             ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, frequencySet)
@@ -98,10 +85,8 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     ),
                     this.mainActivity.applicationContext
                 )
-
             }
         }
-
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -111,4 +96,6 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     override fun onNothingSelected(p0: AdapterView<*>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+//    private fun setDateTimeListeners(timePicker: TimePickerDialog)
 }
