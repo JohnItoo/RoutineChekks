@@ -1,105 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-                name="routine"
-                type="com.john.itoo.routinecheckks.app.models.Routine" />
+            name="routine"
+            type="com.john.itoo.routinecheckks.app.models.Routine" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true"
-            style="materialCardViewStyle">
+        style="materialCardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical"
-                android:padding="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="10dp">
 
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
 
                     <TextView
-                            android:id="@+id/name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:padding="4dp"
-                            android:text="@{routine.name}"
-                            android:textColor="?android:textColorPrimary"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="Abyssinian" />
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:padding="4dp"
+                        android:text="@{routine.title}"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="Frequently" />
 
                     <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
 
                         <TextView
-                                android:id="@+id/decscription"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:ellipsize="end"
-                                android:maxLines="3"
-                                android:paddingBottom="4dp"
-                                android:text="@{routine.description}"
-                                android:textColor="?android:textColorPrimary"
-                                android:textSize="16sp"
-                                tools:text="The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals." />
+                            android:id="@+id/decscription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:padding="4dp"
+                            android:text="@{routine.description}"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="16sp"
+                            tools:text="Wake up at 10." />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@{routine.expired == 1 ? @string/expired : @string/active }"
-                        tools:text="@string/active" />
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="6dp"
-                        android:text="@{routine.tagProgress}"
-                        tools:text="@string/active" />
-
                 <ImageView
-                        android:id="@+id/arrowImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="16dp"
-                        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                    android:id="@+id/arrowImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:layout_marginTop="16dp"
+                    android:tint="@color/yearly_color"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             </LinearLayout>
 

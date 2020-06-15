@@ -8,6 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="materialButtonStyle">@style/AppButton</item>
         <item name="materialCardViewStyle">@style/AppCard</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Demo.BottomSheetDialog</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="AppButton" parent="Widget.MaterialComponents.Button">
@@ -16,6 +31,35 @@
 
     <style name="AppCard" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">8dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Demo" parent="">
+        <item name="cornerSize">0dp</item>
+        <item name="cornerFamilyTopLeft">cut</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+    </style>
+
+    <style name="ThemeOverlay.Demo.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Demo.BottomSheet</item>
+    </style>
+
+    <style name="Widget.Demo.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Demo</item>
+    </style>
+
+    <style name="frequencyButton" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_marginBottom">60dp</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="CustomPickerTheme">
+        <item name="colorAccent">@android:color/darker_gray</item>
+        <item name="android:layout_gravity">center</item>
+
+        <item name="android:padding">4dp</item>
     </style>
 
 </resources>

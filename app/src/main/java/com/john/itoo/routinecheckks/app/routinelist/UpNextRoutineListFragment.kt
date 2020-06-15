@@ -43,9 +43,9 @@ class UpNextRoutineListFragment : BaseFragment() {
         binding.viewModel = viewModel
 
 
-        binding.routinesRecyclerView.adapter = RoutineListAdapter {
-            viewModel.displaySelectedRoutineDetails(it)
-        }
+//        binding.routinesRecyclerView.adapter = RoutineListAdapter {
+//            viewModel.displaySelectedRoutineDetails(it)
+//        }
 
 
         viewModel.navigateToSelectedRoutine.observe(this, Observer {

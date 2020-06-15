@@ -34,7 +34,7 @@ ext.versions = [
         androidxBrowser     : '1.0.0',
         constraintLayout    : '1.1.3',
         lifecycle           : '2.1.0-alpha01',
-        navigation          : '1.0.0',
+        navigation          : '2.1.0',
 
         //dagger
         dagger              : '2.21',

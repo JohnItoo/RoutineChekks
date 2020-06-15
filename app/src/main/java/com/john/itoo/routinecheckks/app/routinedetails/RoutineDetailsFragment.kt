@@ -1,28 +1,49 @@
 package com.john.itoo.routinecheckks.app.routinedetails
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.john.itoo.routinecheckks.App
 import com.john.itoo.routinecheckks.R
+import com.john.itoo.routinecheckks.Utils
 import com.john.itoo.routinecheckks.app.ExampleRepository
-import com.john.itoo.routinecheckks.base.BaseFragment
+import com.john.itoo.routinecheckks.app.newroutines.CreateRoutineViewModel
 import com.john.itoo.routinecheckks.databinding.FragmentRoutineDetailBinding
+import com.john.itoo.routinecheckks.extensions.readableString
 import kotlinx.coroutines.*
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class RoutineDetailsFragment : BaseFragment(), CoroutineScope {
+class RoutineDetailsFragment : BottomSheetDialogFragment(), CoroutineScope {
 
     lateinit var binding: FragmentRoutineDetailBinding
     @Inject
     lateinit var repo: ExampleRepository
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mJob: Job
     override val coroutineContext: CoroutineContext
         get() = mJob + Dispatchers.Main
+    private val frequencySet = mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly")
+
+    companion object {
+        val TAG = "RoutineDetailsFragment"
+
+        fun newInstance() = RoutineDetailsFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +51,8 @@ class RoutineDetailsFragment : BaseFragment(), CoroutineScope {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRoutineDetailBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
+
 
         return binding.root
     }
@@ -39,17 +61,58 @@ class RoutineDetailsFragment : BaseFragment(), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
         val args = RoutineDetailsFragmentArgs.fromBundle(arguments!!)
 
-        (mainActivity.applicationContext as App).component.inject(this)
+        (activity?.applicationContext as App).component.inject(this)
 
-        mainActivity.setUpToolBar("Routine Details")
+//        mainActivity.setUpToolBar("Routine Details")
+
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(CreateRoutineViewModel::class.java)
+        val alertDialog: AlertDialog? = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage("Do you really want to delete this?")
+                setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+                    // User clicked OK button
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.delete(
+                            binding.routine!!,
+                            context
+                        )
+                    }
+                    dismiss()
+                }
+                setNegativeButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                        dialog.cancel()
+                    })
+            }
+            // Set other dialog properties
+
+            // Create the AlertDialog
+            builder.create()
+        }
         binding.routine = args.routine
+        binding.deleteRoutine.setOnClickListener {
+            alertDialog?.show()
+        }
+        val abbreviation = Utils.abbreviations[args.routine.frequency - 1]
+        binding.editDetailsButton.setBackgroundTintList(context!!.resources.getColorStateList(Utils.frequencyColorMap[abbreviation]!!))
         binding.editDetailsButton.setOnClickListener {
 
-            this.findNavController().navigate(
-                RoutineDetailsFragmentDirections.actionRoutineDetailsFragmentToEditRoutineFragment(
-                    args.routine
-                )
-            )
+            try {
+                requireActivity().runOnUiThread {
+                    this.findNavController().navigate(
+                        RoutineDetailsFragmentDirections.actionRoutineDetailsFragmentToCreateRoutineFragment(
+                            args.routine
+                        )
+                    )
+                }
+            } catch (e: IllegalArgumentException) {
+                Timber.e("User tried to break Nav stack")
+            }
         }
 
         if (args.routine.canUpdate == 1) {
@@ -63,21 +126,15 @@ class RoutineDetailsFragment : BaseFragment(), CoroutineScope {
         val days = hours / 24
         val minutes = hours % 24
 
-        binding.timeLeft.text = findDiff(Date(), args.routine.date)
-        if (args.routine.total > 0 && args.routine.done > 0) {
-            if (args.routine.done / args.routine.total >= 0.7) {
-                binding.statusImage.setImageResource(com.john.itoo.routinecheckks.R.drawable.thumb)
-                binding.statusText.text =
-                    "‘Good job! You have over 70% check rate for this routine’"
-
-            } else {
-                binding.statusImage.setImageResource(R.drawable.fail)
-                binding.statusText.text = "OOps you do not have up to 70 percent completion rate"
-            }
-        } else {
-            binding.statusText.text = "Oops you do not have enough notifications to build a score."
-
-        }
+        val spannableString =
+            SpannableString("This is routine occurs ${frequencySet[args.routine.frequency - 1]} and will happen next ${args.routine.date.readableString()}")
+//        spannableString.setSpan(
+//            ForegroundColorSpan(getTextColor(args.routine.frequency)),
+//            22,
+//            spannableString.length,
+//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//        )
+        binding.statusText.text = spannableString
 
         mJob = Job()
         binding.markDone.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -93,28 +150,14 @@ class RoutineDetailsFragment : BaseFragment(), CoroutineScope {
         mJob.cancel()
     }
 
-    fun findDiff(startDate: Date, endDate: Date): String {
-
-        //milliseconds
-        var different = endDate.time - startDate.time
-
-        println("startDate : $startDate")
-        println("endDate : $endDate")
-        println("different : $different")
-
-        val secondsInMilli: Long = 1000
-        val minutesInMilli = secondsInMilli * 60
-        val hoursInMilli = minutesInMilli * 60
-        val daysInMilli = hoursInMilli * 24
-
-        val elapsedHours = different / hoursInMilli
-        different %= hoursInMilli
-
-        val elapsedMinutes = different / minutesInMilli
-        different %= minutesInMilli
-
-        val elapsedSeconds = different / secondsInMilli
-
-        return "$elapsedHours hours $elapsedMinutes minutes $elapsedSeconds seconds left"
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener {
+            val dialog = it as BottomSheetDialog
+            val bottomSheet =
+                dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            BottomSheetBehavior.from(bottomSheet!!).state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return bottomSheetDialog
     }
 }

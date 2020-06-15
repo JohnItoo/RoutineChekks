@@ -5,14 +5,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
+import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
-import androidx.navigation.Navigation
-import com.john.itoo.routinecheckks.MainActivity
 import com.john.itoo.routinecheckks.R
 import com.john.itoo.routinecheckks.app.models.Routine
 import timber.log.Timber
@@ -20,7 +18,7 @@ import javax.inject.Inject
 
 class NotificationHelper @Inject constructor(
     private val notificationManager: NotificationManager,
-    private val builder: Notification.Builder,
+    private val builder: NotificationCompat.Builder,
     private val alarmPack: AlarmFanny
 ) {
     companion object {
@@ -65,8 +63,8 @@ class NotificationHelper @Inject constructor(
             .setAutoCancel(true)
 
         try {
+            Timber.d("Should show this ish")
             notificationManager.notify(0, builder.build())
-            alarmPack.schedule(routine, context, AlarmFanny.RESCHEDULE)
         } catch (e: Exception) {
             e.printStackTrace()
         }

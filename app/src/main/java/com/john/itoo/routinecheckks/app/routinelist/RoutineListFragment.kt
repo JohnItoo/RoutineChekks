@@ -12,8 +12,7 @@ import com.john.itoo.routinecheckks.App
 import com.john.itoo.routinecheckks.base.BaseFragment
 import com.john.itoo.routinecheckks.databinding.FragmentRoutinesListBinding
 import com.john.itoo.routinecheckks.networkutils.LoadingStatus
-import kotlinx.android.synthetic.main.fragment_routines_list.*
-import okhttp3.internal.notify
+import timber.log.Timber
 import javax.inject.Inject
 
 class RoutineListFragment : BaseFragment() {
@@ -29,7 +28,7 @@ class RoutineListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRoutinesListBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -41,28 +40,46 @@ class RoutineListFragment : BaseFragment() {
             ViewModelProviders.of(this, viewModelFactory).get(RoutineListViewModel::class.java)
         binding.viewModel = viewModel
 
+
         binding.newRoutine.setOnClickListener {
-            this.findNavController()
-                .navigate(RoutineListFragmentDirections.actionRoutinesListFragmentToCreateRoutineFragment())
+            try {
+                requireActivity().runOnUiThread {
+                    this.findNavController()
+                        .navigate(
+                            RoutineListFragmentDirections.actionRoutinesListFragmentToCreateRoutineFragment(
+                                viewModel.fetchDefaultRoutine()
+                            )
+                        )
+                }
+            } catch (exception: java.lang.IllegalArgumentException) {
+                Timber.e("User tried to tap more than twice.")
+            }
+
         }
 
-        binding.upNext.setOnClickListener {
-            this.findNavController()
-                .navigate(RoutineListFragmentDirections.actionRoutinesListFragmentToUpNextRoutineListFragment())
-        }
-
-
-        binding.routinesRecyclerView.adapter = RoutineListAdapter {
+        binding.routinesRecyclerView.adapter = RoutineListAdapter(context!!) {
             viewModel.displaySelectedRoutineDetails(it)
         }
 
         viewModel.navigateToSelectedRoutine.observe(this, Observer {
             if (it != null) {
-                this.findNavController().navigate(
-                    RoutineListFragmentDirections.actionRoutinesListFragmentToRoutineDetailsFragment(it)
-                )
-                viewModel.displaySelectedRoutineDetailsComplete()
+                requireActivity().runOnUiThread {
+                    try {
+
+                        this.findNavController().navigate(
+                            RoutineListFragmentDirections.actionRoutinesListFragmentToRoutineDetailsFragment(
+                                it
+                            )
+                        )
+                        viewModel.displaySelectedRoutineDetailsComplete()
+
+                    } catch (exception: IllegalArgumentException) {
+                        Timber.e("User tried to tap more than twice.")
+                    }
+
+                }
             }
+//           RoutineDetailsFragment.newInstance().show(fragmentManager!!, RoutineDetailsFragment.TAG)
         })
 
         viewModel.loadingStatus.observe(this, Observer {
@@ -72,5 +89,10 @@ class RoutineListFragment : BaseFragment() {
                 is LoadingStatus.Error -> mainActivity.showError(it.errorMessage)
             }
         })
+//        GlobalScope.launch {
+//            viewModel.handleBoot(context!!)
+//
+//        }
+
     }
 }

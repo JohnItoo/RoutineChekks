@@ -54,7 +54,8 @@
                 app:layout_constraintBottom_toTopOf="@id/newRoutine"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintVertical_bias="1.0"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_editor_absoluteX="0dp"
+             android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/newRoutine"
@@ -67,6 +68,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/routinesRecyclerView"
                 app:layout_constraintVertical_bias="1.0" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

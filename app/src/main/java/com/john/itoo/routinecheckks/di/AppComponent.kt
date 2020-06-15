@@ -7,11 +7,8 @@ import com.john.itoo.routinecheckks.app.newroutines.EditRoutineFragment
 import com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragment
 import com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragmentDirections
 import com.john.itoo.routinecheckks.app.routinelist.UpNextRoutineListFragment
-import com.john.itoo.routinecheckks.scheduling.AlarmFanny
-import com.john.itoo.routinecheckks.scheduling.AlarmReceiver
-import com.john.itoo.routinecheckks.scheduling.NotificationHelper
+import com.john.itoo.routinecheckks.scheduling.*
 import com.john.itoo.routinecheckks.utils.TimeUtils
-import com.john.itoo.routinecheckks.scheduling.RefreshDataWork
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -30,6 +27,8 @@ interface AppComponent {
     fun inject(target: UpNextRoutineListFragment)
     fun inject(target: EditRoutineFragment)
     fun inject(target: RoutineDetailsFragment)
+    fun inject(target: RestartAlarmsService)
+    fun inject(target: BootReceiver)
 
     @Component.Builder
     interface Builder {

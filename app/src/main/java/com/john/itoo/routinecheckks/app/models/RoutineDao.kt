@@ -13,8 +13,11 @@ interface RoutineDao {
     @Query("SELECT * FROM databaseroutine")
     fun getAllRoutines(): LiveData<List<DatabaseRoutine>>
 
+    @Query("SELECT * FROM databaseroutine")
+    fun getAllRoutinesAsync(): List<DatabaseRoutine>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg routine: DatabaseRoutine)
+    fun insert(routine: DatabaseRoutine): Long
 
     @Query("SELECT * FROM databaseroutine WHERE date = :date ")
     fun getRoutine(date : Date) : DatabaseRoutine

@@ -53,7 +53,7 @@ class EditRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity.setUpToolBar("Edit Routine", true)
+        mainActivity.setUpToolBar("Edit Routine")
         (mainActivity.applicationContext as App).component.inject(this)
 
         val viewModel =
@@ -65,7 +65,7 @@ class EditRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.routine = args.routine
         date = args.routine.date
         Timber.d(args.routine.toString())
-        timeUtils.setDateTimeListeners(this.context!!, binding.time)
+//        timeUtils.setDateTimeListeners(this.context!!, binding.time)
         binding.frequency.onItemSelectedListener = this
         val adapter =
             ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, frequencySet)
@@ -77,24 +77,24 @@ class EditRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             if (binding.description.text.isEmpty() || binding.title.text.isEmpty()) {
                 Snackbar.make(this.view!!, "Kindly fill in all fields", Snackbar.LENGTH_LONG).show()
             } else {
-                viewModel.insert(
-                    Routine(
-                        args.routine.id,
-                        binding.description.text.toString(),
-                        binding.title.text.toString(),
-                        binding.title.text.toString(),
-                        frequency,
-                        args.routine.canUpdate,
-                        args.routine.done,
-                        args.routine.createdAt,
-                        date,
-                        args.routine.total,
-                        args.routine.expired,
-                        args.routine.withinMinute,
-                        args.routine.tagProgress
-                    ),
-                    this.mainActivity.applicationContext
-                )
+//                viewModel.insert(
+//                    Routine(
+//                        args.routine.id,
+//                        binding.description.text.toString(),
+//                        binding.title.text.toString(),
+//                        binding.title.text.toString(),
+//                        frequency,
+//                        args.routine.canUpdate,
+//                        args.routine.done,
+//                        args.routine.createdAt,
+//                        date,
+//                        args.routine.total,
+//                        args.routine.expired,
+//                        args.routine.withinMinute,
+//                        args.routine.tagProgress
+//                    ),
+//                    this.mainActivity.applicationContext
+//                )
             }
         }
     }

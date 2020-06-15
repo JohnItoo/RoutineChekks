@@ -1,22 +1,29 @@
 package com.john.itoo.routinecheckks.app.routinelist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.john.itoo.routinecheckks.R
+import com.john.itoo.routinecheckks.Utils
 import com.john.itoo.routinecheckks.app.models.Routine
 import com.john.itoo.routinecheckks.databinding.ItemRoutineListBinding
 
 class RoutineListAdapter(
+    val context: Context,
     val routineItemClickListener: (Routine) -> Unit
 ) : ListAdapter<Routine, RoutineListAdapter.RoutinesViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutinesViewHolder {
         return RoutinesViewHolder(
             ItemRoutineListBinding.bind(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_routine_list, parent, false)
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_routine_list,
+                    parent,
+                    false
+                )
             )
         )
     }
@@ -27,9 +34,11 @@ class RoutineListAdapter(
 
     companion object DiffCallback : DiffUtil.ItemCallback<Routine>() {
 
-        override fun areItemsTheSame(oldItem: Routine, newItem: Routine): Boolean = oldItem === newItem
+        override fun areItemsTheSame(oldItem: Routine, newItem: Routine): Boolean =
+            oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Routine, newItem: Routine): Boolean = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Routine, newItem: Routine): Boolean =
+            oldItem.id == newItem.id
     }
 
     inner class RoutinesViewHolder(private var binding: ItemRoutineListBinding) :
@@ -43,6 +52,9 @@ class RoutineListAdapter(
         fun bind(routine: Routine) {
             binding.routine = routine
             binding.executePendingBindings()
+            val abbreviation = Utils.abbreviations[routine.frequency - 1]
+            binding.arrowImageView.imageTintList =
+                context.resources.getColorStateList(Utils.frequencyColorMap[abbreviation]!!)
         }
     }
 }

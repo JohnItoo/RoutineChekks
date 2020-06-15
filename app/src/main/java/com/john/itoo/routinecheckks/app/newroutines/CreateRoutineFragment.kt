@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -14,14 +12,19 @@ import com.john.itoo.routinecheckks.App
 import com.john.itoo.routinecheckks.base.BaseFragment
 import com.john.itoo.routinecheckks.databinding.CreateRoutineFragmentBinding
 import com.john.itoo.routinecheckks.app.models.Routine
+import com.john.itoo.routinecheckks.extensions.readableString
+import com.john.itoo.routinecheckks.utils.TimeHandler
 import com.john.itoo.routinecheckks.utils.TimeUtils
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
-class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class CreateRoutineFragment : BaseFragment(), TimeHandler {
 
-    private var frequency = "Hourly"
     private var date = Date()
+    private lateinit var viewFrequencyMap: HashMap<Int, View>
+    private var currentlySelectedFrequency = 1
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -30,9 +33,9 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     @Inject
     lateinit var timeUtils: TimeUtils
 
+
     companion object {
         fun newInstance() = CreateRoutineFragment()
-        val frequencySet = mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly")
     }
 
     private lateinit var viewModel: CreateRoutineViewModel
@@ -42,60 +45,114 @@ class CreateRoutineFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         savedInstanceState: Bundle?
     ): View? {
         binding = CreateRoutineFragmentBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         (mainActivity.applicationContext as App).component.inject(this)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity.setUpToolBar("Create New Routine", true)
+        mainActivity.setUpToolBar("Create New Routine")
         (mainActivity.applicationContext as App).component.inject(this)
+        binding.time.text = date.readableString()
+        val args = CreateRoutineFragmentArgs.fromBundle(arguments!!)
+        val routine = args.routine
+
+        if (routine.id != -1) {
+            binding.routine = args.routine
+            binding.time.text = routine.date.readableString()
+            currentlySelectedFrequency = routine.frequency
+            date = routine.date
+        }
 
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(CreateRoutineViewModel::class.java)
-        binding.viewModel = viewModel
-        timeUtils.setDateTimeListeners(this.context!!, binding.time)
+//        binding.viewModel = viewModel
 
-        binding.frequency.setOnItemSelectedListener(this)
-        val adapter =
-            ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, frequencySet)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.frequency.adapter = adapter
+        timeUtils.setDateTimeListeners(this.context!!, binding.timeLayout, binding.time, this, date)
+        viewFrequencyMap = hashMapOf(
+            1 to binding.hourly,
+            2 to binding.daily,
+            3 to binding.weekly,
+            4 to binding.monthly,
+            5 to binding.yearly
+        )
+
+        showUserFrequencySelection()
+        setFrequencyClickListeners()
 
         binding.viewDetailsButton.setOnClickListener {
-            if (binding.description.text.isEmpty() || binding.title.text.isEmpty()) {
-                Snackbar.make(this.view!!, "Kindly fill in all fields", Snackbar.LENGTH_LONG).show()
+            if (binding.description.text?.isEmpty()!! || binding.title.text?.isEmpty()!!) {
+                if (binding.description.text?.isEmpty()!!) {
+                    binding.description.setError("Please add a description")
+                }
+                if (binding.title.text?.isEmpty()!!) {
+                    binding.title.setError("Please add a title")
+                }
             } else {
+                Timber.d(date.toString())
+                val updateTime = Date()
+                updateTime.time = date.time
                 viewModel.insert(
                     Routine(
                         0,
                         binding.description.text.toString(),
                         binding.title.text.toString(),
-                        binding.title.text.toString(),
-                        frequency,
+                        currentlySelectedFrequency,
                         0,
                         0,
                         Date(),
                         date,
+                        timeUtils.getTimeToUpdate(updateTime, currentlySelectedFrequency),
                         0,
                         0,
                         0,
                         "To-do"
                     ),
-                    this.mainActivity.applicationContext
+                    this.mainActivity.applicationContext,
+                    routine.id != -1,
+                    routine
                 )
+                Snackbar.make(this.view!!, "This is it", Snackbar.LENGTH_SHORT)
+                this.fragmentManager!!.popBackStack()
             }
         }
     }
 
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        frequency = frequencySet[p2]
+    private fun setFrequencyClickListeners() {
+        for (entry in viewFrequencyMap) {
+            entry.value.setOnClickListener {
+                handle(entry.key)
+            }
+        }
     }
 
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun handle(viewIndex: Int) {
+        if (currentlySelectedFrequency != viewIndex) {
+            currentlySelectedFrequency = viewIndex
+            showUserFrequencySelection()
+        }
     }
 
-//    private fun setDateTimeListeners(timePicker: TimePickerDialog)
+    private fun showUserFrequencySelection() {
+        for (frequencyEntry in viewFrequencyMap) {
+            var isOpaque = false
+            if (frequencyEntry.key == currentlySelectedFrequency) {
+                isOpaque = true
+            }
+            toggleViewAlpha(currentView = frequencyEntry.value, opaque = isOpaque)
+        }
+    }
+
+    private fun toggleViewAlpha(currentView: View, opaque: Boolean) {
+        if (opaque) {
+            currentView.alpha = 1f
+        } else {
+            currentView.alpha = 0.4f
+        }
+    }
+
+    override fun setTime(date: Date) {
+        this.date = date
+    }
 }

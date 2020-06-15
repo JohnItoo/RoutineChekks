@@ -16,9 +16,7 @@ class DatabaseRoutine(
 
     val title: String,
 
-    val name: String,
-
-    val frequency: String,
+    val frequency: Int,
 
     val canUpdate: Int,
 
@@ -30,6 +28,9 @@ class DatabaseRoutine(
     @TypeConverters(TimeUtils::class)
     val date: Date,
 
+    @TypeConverters(TimeUtils::class)
+    val nextTime: Date,
+
     val total: Int,
 
     val expired: Int,
@@ -37,21 +38,9 @@ class DatabaseRoutine(
     var withinMinute: Int,
 
     var tagProgress: String
-)
 
-//class WeightConverter {
-//    private val gson: Gson = Gson()
-//
-//    @TypeConverter
-//    fun toWeight(weight: String): Weight {
-//        return gson.fromJson(weight, Weight::class.java)
-//    }
-//
-//    @TypeConverter
-//    fun toString(weight: Weight): String {
-//        return gson.toJson(weight)
-//    }
-//}
+
+)
 
 fun List<DatabaseRoutine>.asDomainModel(): List<Routine> {
     return map {
@@ -62,8 +51,6 @@ fun List<DatabaseRoutine>.asDomainModel(): List<Routine> {
 
             title = it.title,
 
-            name = it.name,
-
             frequency = it.frequency,
 
             canUpdate = it.canUpdate,
@@ -73,6 +60,8 @@ fun List<DatabaseRoutine>.asDomainModel(): List<Routine> {
             createdAt = it.createdAt,
 
             date = it.date,
+
+            nextTime = it.nextTime,
 
             total = it.total,
 
@@ -90,12 +79,12 @@ fun Routine.asDbRoutine(): DatabaseRoutine {
         this.id,
         this.description,
         this.title,
-        this.name,
         this.frequency,
         this.canUpdate,
         this.done,
         this.createdAt,
         this.date,
+        this.nextTime,
         this.total,
         this.expired,
         this.withinMinute,
@@ -108,12 +97,12 @@ fun DatabaseRoutine.asRoutine(): Routine {
         this.id,
         this.description,
         this.title,
-        this.name,
         this.frequency,
         this.canUpdate,
         this.done,
         this.createdAt,
         this.date,
+        this.nextTime,
         this.total,
         this.expired,
         this.withinMinute,

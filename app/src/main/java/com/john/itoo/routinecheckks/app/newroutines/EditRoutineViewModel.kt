@@ -16,6 +16,6 @@ class EditRoutineViewModel @Inject constructor(private val exampleRepository: Ex
 
     fun insert(routine: Routine, context: Context) = viewModelScope.launch(Dispatchers.IO) {
         exampleRepository.insert(routine.asDbRoutine())
-        alarmPack.schedule(routine, context, AlarmFanny.SCHEDULE_TYPE_DEFAULT)
+        alarmPack.schedule(routine, context)
     }
 }

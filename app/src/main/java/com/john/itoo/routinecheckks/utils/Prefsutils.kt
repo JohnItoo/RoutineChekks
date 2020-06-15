@@ -19,6 +19,11 @@ class PrefsUtils @Inject constructor(private val sharedPref: SharedPreferences, 
         return sharedPref.contains(key)
     }
 
+    fun remove(key: String) {
+        sharedPref.edit {
+            remove(key)
+        }
+    }
     fun putBoolean(key: String, value: Boolean) {
         sharedPref.edit {
             putBoolean(key, value)
