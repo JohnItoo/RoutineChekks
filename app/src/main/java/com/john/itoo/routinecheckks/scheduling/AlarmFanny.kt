@@ -59,11 +59,12 @@ class AlarmFanny @Inject constructor(
         val pendingIntent = fetchPendingIntent(routine, context.applicationContext)
         Timber.d("Set Alarm now.")
 
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            alarmTime,
-            pendingIntent
-        )
+//        alarmManager.setExact(
+//            AlarmManager.RTC_WAKEUP,
+//            alarmTime,
+//            pendingIntent
+//        )
+        alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(alarmTime, pendingIntent), pendingIntent)
         Timber.d("Just set alarm for : %s", routine.date.readableString())
     }
 

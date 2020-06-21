@@ -3,10 +3,7 @@ package com.john.itoo.routinecheckks.di
 import android.app.Application
 import com.john.itoo.routinecheckks.app.routinelist.RoutineListFragment
 import com.john.itoo.routinecheckks.app.newroutines.CreateRoutineFragment
-import com.john.itoo.routinecheckks.app.newroutines.EditRoutineFragment
 import com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragment
-import com.john.itoo.routinecheckks.app.routinedetails.RoutineDetailsFragmentDirections
-import com.john.itoo.routinecheckks.app.routinelist.UpNextRoutineListFragment
 import com.john.itoo.routinecheckks.scheduling.*
 import com.john.itoo.routinecheckks.utils.TimeUtils
 import dagger.BindsInstance
@@ -24,8 +21,6 @@ interface AppComponent {
     fun inject(target: AlarmFanny)
     fun inject(target: NotificationHelper)
     fun inject(target: AlarmReceiver)
-    fun inject(target: UpNextRoutineListFragment)
-    fun inject(target: EditRoutineFragment)
     fun inject(target: RoutineDetailsFragment)
     fun inject(target: RestartAlarmsService)
     fun inject(target: BootReceiver)

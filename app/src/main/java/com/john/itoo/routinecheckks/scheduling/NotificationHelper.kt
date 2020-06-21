@@ -75,7 +75,7 @@ class NotificationHelper @Inject constructor(
         args.putParcelable("Routine", routine)
         return NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.routineDetailsFragment)
+            .setDestination(R.id.routinesListFragment)
             .setArguments(args)
             .createPendingIntent()
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.john.itoo.routinecheckks.App
+import com.john.itoo.routinecheckks.app.models.Routine
 import com.john.itoo.routinecheckks.base.BaseFragment
 import com.john.itoo.routinecheckks.databinding.FragmentRoutinesListBinding
 import com.john.itoo.routinecheckks.networkutils.LoadingStatus
@@ -21,6 +22,11 @@ class RoutineListFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var binding: FragmentRoutinesListBinding
+
+    companion object {
+        const val DEEP_LINK_EXTRAS = "android-support-nav:controller:deepLinkExtras"
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +45,16 @@ class RoutineListFragment : BaseFragment() {
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(RoutineListViewModel::class.java)
         binding.viewModel = viewModel
+        val bundle = activity?.intent?.extras
 
+        //Iterating over the bundle of we discover this DEEP_LINK_EXTRAS as key to a bundle that
+        // contains (activity.intent.extras[Deep_link_extras])["Rputine"]  = Routine.
+        val it = (bundle?.get(DEEP_LINK_EXTRAS)) as? Bundle
+        val routine = it?.get("Routine") as? Routine
+
+        if (routine != null) {
+            viewModel.displaySelectedRoutineDetails(routine)
+        }
 
         binding.newRoutine.setOnClickListener {
             try {
@@ -61,6 +76,20 @@ class RoutineListFragment : BaseFragment() {
             viewModel.displaySelectedRoutineDetails(it)
         }
 
+        showRoutineDetails(viewModel)
+
+        viewModel.loadingStatus.observe(this, Observer {
+            when (it) {
+                LoadingStatus.Success -> mainActivity.dismissLoading()
+                is LoadingStatus.Loading -> mainActivity.showLoading(it.message)
+                is LoadingStatus.Error -> mainActivity.showError(it.errorMessage)
+            }
+        })
+
+
+    }
+
+    private fun showRoutineDetails(viewModel: RoutineListViewModel) {
         viewModel.navigateToSelectedRoutine.observe(this, Observer {
             if (it != null) {
                 requireActivity().runOnUiThread {
@@ -79,20 +108,6 @@ class RoutineListFragment : BaseFragment() {
 
                 }
             }
-//           RoutineDetailsFragment.newInstance().show(fragmentManager!!, RoutineDetailsFragment.TAG)
         })
-
-        viewModel.loadingStatus.observe(this, Observer {
-            when (it) {
-                LoadingStatus.Success -> mainActivity.dismissLoading()
-                is LoadingStatus.Loading -> mainActivity.showLoading(it.message)
-                is LoadingStatus.Error -> mainActivity.showError(it.errorMessage)
-            }
-        })
-//        GlobalScope.launch {
-//            viewModel.handleBoot(context!!)
-//
-//        }
-
     }
 }

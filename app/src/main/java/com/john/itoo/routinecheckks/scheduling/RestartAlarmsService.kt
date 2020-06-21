@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.john.itoo.routinecheckks.App
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class RestartAlarmsService : JobIntentService() {
 
     @Inject
-    lateinit var repository: ExampleRepository
+    lateinit var repository: RoutineRepository
     @Inject
     lateinit var alarmFanny: AlarmFanny
     lateinit var context: Context

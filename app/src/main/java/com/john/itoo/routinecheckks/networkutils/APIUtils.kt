@@ -15,7 +15,6 @@ fun <T : Any> getAPIResult(response: Response<T>): Result<T> {
             return Result.Success(body)
         }
     }
-    // This else branch is specific to cotta-cush APIs
     else {
         val errorBody = response.errorBody()
         if (errorBody != null) {

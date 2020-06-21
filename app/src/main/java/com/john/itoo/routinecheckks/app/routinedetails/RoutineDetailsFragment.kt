@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.john.itoo.routinecheckks.App
 import com.john.itoo.routinecheckks.R
 import com.john.itoo.routinecheckks.Utils
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.newroutines.CreateRoutineViewModel
 import com.john.itoo.routinecheckks.databinding.FragmentRoutineDetailBinding
 import com.john.itoo.routinecheckks.extensions.readableString
@@ -31,7 +31,7 @@ class RoutineDetailsFragment : BottomSheetDialogFragment(), CoroutineScope {
 
     lateinit var binding: FragmentRoutineDetailBinding
     @Inject
-    lateinit var repo: ExampleRepository
+    lateinit var repo: RoutineRepository
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mJob: Job
@@ -115,11 +115,6 @@ class RoutineDetailsFragment : BottomSheetDialogFragment(), CoroutineScope {
             }
         }
 
-        if (args.routine.canUpdate == 1) {
-            binding.markDone.visibility = View.VISIBLE
-        } else {
-            binding.markDone.visibility = View.INVISIBLE
-        }
 
         val diff = args.routine.date.time - Date().time
         val hours = (diff / (1000 * 60 * 60 * 24))
@@ -137,12 +132,6 @@ class RoutineDetailsFragment : BottomSheetDialogFragment(), CoroutineScope {
         binding.statusText.text = spannableString
 
         mJob = Job()
-        binding.markDone.setOnCheckedChangeListener { buttonView, isChecked ->
-            launch(Dispatchers.Default) {
-                async { repo.updateRoutineToMarkAsDone(routine = args.routine) }
-            }
-            binding.markDone.visibility = View.INVISIBLE
-        }
     }
 
     override fun onDestroyView() {

@@ -31,6 +31,3 @@ interface RoutineDao {
     @Query("DELETE FROM databaseroutine")
     fun dropTable()
 }
-
-
-

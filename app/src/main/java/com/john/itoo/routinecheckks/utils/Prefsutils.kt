@@ -1,8 +1,11 @@
 package com.john.itoo.routinecheckks.utils
 
+import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
+import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
 import javax.inject.Inject
@@ -95,5 +98,16 @@ class PrefsUtils @Inject constructor(private val sharedPref: SharedPreferences, 
     fun <T> getPrefAsObject(key: String, clazz: Class<T>): T {
         val json = getString(key, "")
         return gson.fromJson(json, clazz)
+    }
+
+    fun iterateOverBundle(activity: Activity) {
+        val bundle = activity?.intent?.extras
+        if (bundle != null) {
+            for (key in bundle.keySet()) {
+                Timber.d(
+                    key + " : " + if (bundle[key] != null) bundle[key] else "NULL"
+                )
+            }
+        }
     }
 }

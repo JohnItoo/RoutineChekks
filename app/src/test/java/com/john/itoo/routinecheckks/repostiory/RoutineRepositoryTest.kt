@@ -1,7 +1,7 @@
 package com.john.itoo.androidbaseprojectkt.repostiory
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.models.*
 import kotlinx.android.synthetic.main.edit_routine_fragment.view.*
 
@@ -10,26 +10,24 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers
-import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import java.util.*
 
 @RunWith(JUnit4::class)
-class ExampleRepositoryTest {
+class RoutineRepositoryTest {
 
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
-    private lateinit var repository: ExampleRepository
+    private lateinit var repository: RoutineRepository
     private val routineDao = mock(RoutineDao::class.java)
     @UseExperimental(ObsoleteCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
@@ -45,7 +43,7 @@ class ExampleRepositoryTest {
         Dispatchers.setMain(mainThreadSurrogate)
         `when`(database.routineDao).thenReturn(routineDao)
         `when`(database.runInTransaction(ArgumentMatchers.any())).thenCallRealMethod()
-        repository = ExampleRepository(database)
+        repository = RoutineRepository(database)
         dbRoutine = data.asDbRoutine()
 //        `when`(routineDao.insert(dbRoutine as DatabaseRoutine)).thenReturn(dbRoutine as DatabaseRoutine)
     }

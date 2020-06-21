@@ -10,14 +10,8 @@ data class Routine(
     val description: String,
     val title: String,
     val frequency: Int,
-    var canUpdate: Int,
-    var done: Int,
     val createdAt: Date,
     var date: Date,
     var nextTime: Date,
-    var total: Int,
-    var expired: Int,
-    var withinMinute: Int,
-    var tagProgress: String
-
+    var total: Int
 ) : Parcelable

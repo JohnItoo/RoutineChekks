@@ -6,7 +6,6 @@ import androidx.room.TypeConverters
 import com.john.itoo.routinecheckks.utils.TimeUtils
 import java.util.*
 
-
 @Entity
 class DatabaseRoutine(
     @PrimaryKey(autoGenerate = true)
@@ -18,10 +17,6 @@ class DatabaseRoutine(
 
     val frequency: Int,
 
-    val canUpdate: Int,
-
-    val done: Int,
-
     @TypeConverters(TimeUtils::class)
     val createdAt: Date,
 
@@ -31,15 +26,7 @@ class DatabaseRoutine(
     @TypeConverters(TimeUtils::class)
     val nextTime: Date,
 
-    val total: Int,
-
-    val expired: Int,
-
-    var withinMinute: Int,
-
-    var tagProgress: String
-
-
+    val total: Int
 )
 
 fun List<DatabaseRoutine>.asDomainModel(): List<Routine> {
@@ -53,23 +40,13 @@ fun List<DatabaseRoutine>.asDomainModel(): List<Routine> {
 
             frequency = it.frequency,
 
-            canUpdate = it.canUpdate,
-
-            done = it.done,
-
             createdAt = it.createdAt,
 
             date = it.date,
 
             nextTime = it.nextTime,
 
-            total = it.total,
-
-            expired = it.expired,
-
-            withinMinute = it.withinMinute,
-
-            tagProgress = it.tagProgress
+            total = it.total
         )
     }
 }
@@ -80,15 +57,10 @@ fun Routine.asDbRoutine(): DatabaseRoutine {
         this.description,
         this.title,
         this.frequency,
-        this.canUpdate,
-        this.done,
         this.createdAt,
         this.date,
         this.nextTime,
-        this.total,
-        this.expired,
-        this.withinMinute,
-        this.tagProgress
+        this.total
     )
 }
 
@@ -98,14 +70,9 @@ fun DatabaseRoutine.asRoutine(): Routine {
         this.description,
         this.title,
         this.frequency,
-        this.canUpdate,
-        this.done,
         this.createdAt,
         this.date,
         this.nextTime,
-        this.total,
-        this.expired,
-        this.withinMinute,
-        this.tagProgress
+        this.total
     )
 }

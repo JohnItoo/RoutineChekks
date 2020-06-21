@@ -1,10 +1,8 @@
 package com.john.itoo.routinecheckks.app
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.john.itoo.routinecheckks.app.models.*
-import com.john.itoo.routinecheckks.extensions.scheduleNext
 import com.john.itoo.routinecheckks.utils.TimeUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -12,7 +10,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-class ExampleRepository @Inject constructor(
+class RoutineRepository @Inject constructor(
     private val routineDatabase: RoutineDatabase,
     private val timeUtils: TimeUtils
 ) {
@@ -38,46 +36,8 @@ class ExampleRepository @Inject constructor(
     }
 
     @WorkerThread
-    suspend fun expireRoutine(routine: Routine) {
-        val exactRoutine = getSingleRoutine(routine).asRoutine()
-        Timber.d("gotten new  routine to expire " + routine)
-        exactRoutine.expired = 1
-        insert(exactRoutine.asDbRoutine())
-    }
-
-    @WorkerThread
     suspend fun getSingleRoutine(routine: Routine): DatabaseRoutine {
         return routineDatabase.routineDao.getRoutine(routine.date)
-    }
-
-    @WorkerThread
-    suspend fun updateRoutineDate(routine: Routine) {
-        val exactRoutine = getSingleRoutine(routine).asRoutine()
-        exactRoutine.date = exactRoutine.date.scheduleNext(routine)
-        exactRoutine.total += 1
-        exactRoutine.canUpdate = 0
-        Timber.d("gotten new  routine to expire " + exactRoutine)
-
-        insert(exactRoutine.asDbRoutine())
-    }
-
-    @WorkerThread
-    suspend fun updateRoutineCanUpdateAndTag(routine: Routine) {
-        val exactRoutine = getSingleRoutine(routine).asRoutine()
-        if (exactRoutine.withinMinute == 0) exactRoutine.tagProgress =
-            "Missed" else exactRoutine.tagProgress = "Done"
-        exactRoutine.withinMinute = 0
-        exactRoutine.canUpdate = 1
-        insert(exactRoutine.asDbRoutine())
-    }
-
-    @WorkerThread
-    suspend fun updateRoutineToMarkAsDone(routine: Routine) {
-        val exactRoutine = getSingleRoutine(routine).asRoutine()
-        exactRoutine.done += 1
-        exactRoutine.canUpdate = 0
-        exactRoutine.withinMinute = 1
-        insert(exactRoutine.asDbRoutine())
     }
 
     fun updateFireNext(routineList: List<Routine>) {

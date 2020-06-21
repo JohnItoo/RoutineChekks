@@ -20,9 +20,9 @@
                 android:id="@+id/action_routinesListFragment_to_createRoutineFragment"
                 app:destination="@id/createRoutineFragment" />
 
-        <action
-                android:id="@+id/action_routinesListFragment_to_upNextRoutineListFragment"
-                app:destination="@id/upNextRoutineListFragment" />
+        <argument
+            android:name="Routine"
+            app:argType="com.john.itoo.routinecheckks.app.models.Routine" />
 
     </fragment>
     <dialog
@@ -39,11 +39,6 @@
     </dialog>
 
     <fragment
-            android:id="@+id/upNextRoutineListFragment"
-            android:name="com.john.itoo.routinecheckks.app.routinelist.UpNextRoutineListFragment"
-            tools:layout="@layout/fragment_routines_list_up_next">
-    </fragment>
-    <fragment
             android:id="@+id/createRoutineFragment"
             android:name="com.john.itoo.routinecheckks.app.newroutines.CreateRoutineFragment"
             tools:layout="@layout/create_routine_fragment">
@@ -53,13 +48,5 @@
 
     </fragment>
 
-    <fragment
-            android:id="@+id/editRoutineFragment"
-            android:name="com.john.itoo.routinecheckks.app.newroutines.EditRoutineFragment"
-            tools:layout="@layout/edit_routine_fragment">
-        <argument
-                android:name="Routine"
-                app:argType="com.john.itoo.routinecheckks.app.models.Routine" />
-    </fragment>
 
 </navigation>

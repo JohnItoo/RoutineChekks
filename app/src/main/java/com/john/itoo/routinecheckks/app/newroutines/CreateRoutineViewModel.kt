@@ -3,20 +3,18 @@ package com.john.itoo.routinecheckks.app.newroutines
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.john.itoo.routinecheckks.base.BaseViewModel
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.models.Routine
 import com.john.itoo.routinecheckks.app.models.asDbRoutine
 import com.john.itoo.routinecheckks.scheduling.AlarmFanny
-import com.john.itoo.routinecheckks.utils.PrefsUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 class CreateRoutineViewModel @Inject constructor(
-    private val exampleRepository: ExampleRepository,
-    private val alarmPack: AlarmFanny,
-    private val prefsUtils: PrefsUtils
+    private val exampleRepository: RoutineRepository,
+    private val alarmPack: AlarmFanny
 ) :
     BaseViewModel() {
 
@@ -28,7 +26,7 @@ class CreateRoutineViewModel @Inject constructor(
                 alarmPack.updateAlarm(oldRoutine, context, routine)
 
             } else {
-               val id =  exampleRepository.insert(routine.asDbRoutine())
+                val id = exampleRepository.insert(routine.asDbRoutine())
                 routine.id = id.toInt()
                 Timber.d(routine.toString())
                 alarmPack.schedule(routine, context)
@@ -39,6 +37,4 @@ class CreateRoutineViewModel @Inject constructor(
         exampleRepository.delete(routine.asDbRoutine())
         alarmPack.cancelAlarm(routine, context)
     }
-
-
 }

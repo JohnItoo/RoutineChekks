@@ -4,11 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.john.itoo.routinecheckks.App
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.models.Routine
-import com.john.itoo.routinecheckks.utils.TimeUtils
-import kotlinx.coroutines.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -16,7 +13,7 @@ class AlarmReceiver : BroadcastReceiver() {
     @Inject
     lateinit var notificationHelper: NotificationHelper
     @Inject
-    lateinit var exampleRepository: ExampleRepository
+    lateinit var exampleRepository: RoutineRepository
     @Inject
     lateinit var alarmFanny: AlarmFanny
 

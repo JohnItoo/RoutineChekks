@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import androidx.room.Room
 import com.john.itoo.routinecheckks.utils.PrefsUtils
 import com.google.gson.Gson
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.models.RoutineDatabase
 import com.john.itoo.routinecheckks.scheduling.AlarmFanny
 import com.john.itoo.routinecheckks.scheduling.AlarmReceiver
@@ -58,8 +58,8 @@ class LocalDataModule {
         AlarmFanny(alarmManager, timeUtils)
 
     @Provides
-    fun provideExampleRepositiory(db: RoutineDatabase, timeUtils: TimeUtils): ExampleRepository =
-        ExampleRepository(db, timeUtils)
+    fun provideExampleRepositiory(db: RoutineDatabase, timeUtils: TimeUtils): RoutineRepository =
+        RoutineRepository(db, timeUtils)
 
     //    @Provides
 //    fun provideAppContext(app: Context) : Context =

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.john.itoo.routinecheckks.App
-import com.john.itoo.routinecheckks.app.ExampleRepository
+import com.john.itoo.routinecheckks.app.RoutineRepository
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class RefreshDataWork(appContext: Context, params: WorkerParameters) :
     CoroutineWorker(appContext, params) {
 
     @Inject
-    lateinit var repository: ExampleRepository
+    lateinit var repository: RoutineRepository
 
     companion object {
         const val WORK_NAME = "RefreshDataWork"

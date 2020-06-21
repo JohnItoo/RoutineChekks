@@ -99,15 +99,10 @@ class CreateRoutineFragment : BaseFragment(), TimeHandler {
                         binding.description.text.toString(),
                         binding.title.text.toString(),
                         currentlySelectedFrequency,
-                        0,
-                        0,
                         Date(),
                         date,
                         timeUtils.getTimeToUpdate(updateTime, currentlySelectedFrequency),
-                        0,
-                        0,
-                        0,
-                        "To-do"
+                        0
                     ),
                     this.mainActivity.applicationContext,
                     routine.id != -1,
