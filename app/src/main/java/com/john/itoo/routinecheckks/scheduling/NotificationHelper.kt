@@ -14,6 +14,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.john.itoo.routinecheckks.R
 import com.john.itoo.routinecheckks.app.models.Routine
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class NotificationHelper @Inject constructor(
@@ -61,10 +62,12 @@ class NotificationHelper @Inject constructor(
             .setVibrate(longArrayOf(0, 1000, 1000, 1000, 1000))
             .setDefaults(Notification.DEFAULT_SOUND)
             .setAutoCancel(true)
+            .setWhen(System.currentTimeMillis())
+            .setShowWhen(true)
 
         try {
             Timber.d("Should show this ish")
-            notificationManager.notify(0, builder.build())
+            notificationManager.notify(Date().time.toInt(), builder.build())
         } catch (e: Exception) {
             e.printStackTrace()
         }

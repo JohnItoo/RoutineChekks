@@ -7,17 +7,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import com.john.itoo.routinecheckks.app.models.Routine
-import com.john.itoo.routinecheckks.extensions.canUpdate
 import com.john.itoo.routinecheckks.extensions.readableString
-import com.john.itoo.routinecheckks.extensions.scheduleNext
-import com.john.itoo.routinecheckks.utils.TimeUtils
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 class AlarmFanny @Inject constructor(
-    private val alarmManager: AlarmManager,
-    private val timeUtils: TimeUtils
+    private val alarmManager: AlarmManager
 ) {
 
     companion object {
@@ -58,13 +53,10 @@ class AlarmFanny @Inject constructor(
     ) {
         val pendingIntent = fetchPendingIntent(routine, context.applicationContext)
         Timber.d("Set Alarm now.")
-
-//        alarmManager.setExact(
-//            AlarmManager.RTC_WAKEUP,
-//            alarmTime,
-//            pendingIntent
-//        )
-        alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(alarmTime, pendingIntent), pendingIntent)
+        alarmManager.setAlarmClock(
+            AlarmManager.AlarmClockInfo(alarmTime, pendingIntent),
+            pendingIntent
+        )
         Timber.d("Just set alarm for : %s", routine.date.readableString())
     }
 

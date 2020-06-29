@@ -15,7 +15,7 @@ class RoutineRepository @Inject constructor(
     private val timeUtils: TimeUtils
 ) {
 
-    var routines = Transformations.map(routineDatabase.routineDao.getAllRoutines()) {
+    var routines = Transformations.map(routineDatabase.routineDao.getAllRoutines(Date())) {
         it.asDomainModel()
     }
 

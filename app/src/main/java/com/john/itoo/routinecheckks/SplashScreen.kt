@@ -4,18 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
-
 
 class SplashScreen : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT: Long = 3000
+    private val SPLASH_TIME_OUT: Long = 5000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-
 
         Timber.d("Splash Intent")
         Timber.d((intent.toString()))
@@ -33,7 +30,5 @@ class SplashScreen : AppCompatActivity() {
                 finish()
             }, SPLASH_TIME_OUT)
         }
-
-
     }
 }

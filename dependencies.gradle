@@ -4,7 +4,7 @@ ext.versions = [
         targetSdkVersion    : 28,
         compileSdkVersion   : 28,
         publishVersionName  : '1.0.0',
-        publishVersionCode  : 1,
+        publishVersionCode  : 2,
 
         //tests
         junit               : '4.12',

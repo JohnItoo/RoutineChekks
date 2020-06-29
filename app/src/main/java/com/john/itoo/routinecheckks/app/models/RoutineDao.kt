@@ -10,8 +10,8 @@ interface RoutineDao {
     @Query("SELECT * FROM databaseroutine WHERE date <= :capDate AND date > :floorDate" )
     fun getNextUpRoutines(capDate: Date, floorDate: Date): LiveData<List<DatabaseRoutine>>
 
-    @Query("SELECT * FROM databaseroutine")
-    fun getAllRoutines(): LiveData<List<DatabaseRoutine>>
+    @Query("SELECT * FROM databaseroutine ORDER BY :currDate - date  ASC")
+    fun getAllRoutines(currDate: Date): LiveData<List<DatabaseRoutine>>
 
     @Query("SELECT * FROM databaseroutine")
     fun getAllRoutinesAsync(): List<DatabaseRoutine>

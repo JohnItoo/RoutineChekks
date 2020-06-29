@@ -3,8 +3,7 @@ package com.john.itoo.androidbaseprojectkt.repostiory
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.john.itoo.routinecheckks.app.RoutineRepository
 import com.john.itoo.routinecheckks.app.models.*
-import kotlinx.android.synthetic.main.edit_routine_fragment.view.*
-
+import com.john.itoo.routinecheckks.utils.TimeUtils
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
@@ -32,9 +31,9 @@ class RoutineRepositoryTest {
     @UseExperimental(ObsoleteCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
     private val database = mock(RoutineDatabase::class.java)
-    public  val data =
-        Routine(0, "viola", "viola", "viola", "Hourly", 0, 0, Date(), Date(), 0, 0, 0, "todo")
-    private var dbRoutine : DatabaseRoutine?  = null
+    val data =
+        Routine(0, "viola", "viola", 1, Date(), Date(), Date(), 1)
+    private var dbRoutine: DatabaseRoutine? = null
 
 
     @Before
@@ -43,7 +42,7 @@ class RoutineRepositoryTest {
         Dispatchers.setMain(mainThreadSurrogate)
         `when`(database.routineDao).thenReturn(routineDao)
         `when`(database.runInTransaction(ArgumentMatchers.any())).thenCallRealMethod()
-        repository = RoutineRepository(database)
+        repository = RoutineRepository(database, TimeUtils())
         dbRoutine = data.asDbRoutine()
 //        `when`(routineDao.insert(dbRoutine as DatabaseRoutine)).thenReturn(dbRoutine as DatabaseRoutine)
     }
@@ -63,26 +62,13 @@ class RoutineRepositoryTest {
         }
         verify(routineDao, times(1)).getRoutine(data.date)
     }
+
     private fun <T> any(): T {
         Mockito.any<T>()
         return uninitialized()
     }
-    private fun <T> uninitialized(): T = null as T
 
-    @Test
-    fun testExpireRoutine() {
-        runBlocking {
-            launch(Dispatchers.Main) {
-                `when`(repository.getSingleRoutine(data)).thenReturn(data.asDbRoutine())
-            }
-        }
-        runBlocking {
-            launch(Dispatchers.Main) {
-                repository.expireRoutine(data)
-            }
-        }
-//        verify(routineDao, times(1)).insert(isA(any()))
-    }
+    private fun <T> uninitialized(): T = null as T
 
     @Test
     fun testInsert() {

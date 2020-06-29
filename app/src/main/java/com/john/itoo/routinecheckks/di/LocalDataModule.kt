@@ -54,8 +54,8 @@ class LocalDataModule {
 
 
     @Provides
-    fun provideAlarmFanny(alarmManager: AlarmManager, timeUtils: TimeUtils): AlarmFanny =
-        AlarmFanny(alarmManager, timeUtils)
+    fun provideAlarmFanny(alarmManager: AlarmManager): AlarmFanny =
+        AlarmFanny(alarmManager)
 
     @Provides
     fun provideExampleRepositiory(db: RoutineDatabase, timeUtils: TimeUtils): RoutineRepository =

@@ -8,5 +8,6 @@
     <string name="up_next_no_routines_found">You have no routines in the next 12 hours</string>
     <string name="active">ACTIVE</string>
     <string name="expired">EXPIRED</string>
+    <string name="a_light_weight_reminder_app">A Light-weight reminder app.\n No sign up required</string>
 
 </resources>
